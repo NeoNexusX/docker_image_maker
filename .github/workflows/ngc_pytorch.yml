@@ -24,7 +24,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          path: /home/runner/work/docker_maker/docker_maker
+          path: /home/runner/work/docker_image_maker/docker_image_maker
 
       # login Docker Hub
       - name: Login to Docker Hub
@@ -42,7 +42,7 @@ jobs:
       - name: Extract version from tag
         id: vars
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}  #remove v 
+          VERSION=${VERSION##*_v}
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
