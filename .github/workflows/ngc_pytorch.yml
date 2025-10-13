@@ -42,7 +42,8 @@ jobs:
       - name: Extract version from tag
         id: vars
         run: |
-          VERSION=${VERSION##*_v}
+          REF=${GITHUB_REF#refs/tags/}
+          VERSION=${REF##*_v}                
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
