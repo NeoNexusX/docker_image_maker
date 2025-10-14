@@ -43,6 +43,8 @@ jobs:
         id: vars
         run: |
           TAG=${GITHUB_REF#refs/tags/}
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "Extracted tag: $TAG"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -52,7 +54,7 @@ jobs:
           push: true
           load: false
           tags: |
-            neonexusx/bionet_deeplearning:${{ steps.vars.outputs.TAG }}
+            neonexusx/bionet_deeplearning:${{ env.TAG }}
             neonexusx/bionet_deeplearning:latest
           cache-from: type=registry,ref=neonexusx/bionet_deeplearning:cache
           cache-to: type=registry,ref=neonexusx/bionet_deeplearning:cache,mode=max
