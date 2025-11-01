@@ -1,7 +1,7 @@
 # ==============================
 # Stage 1: Miniconda 构建阶段
 # ==============================
-FROM nvidia/cuda:13.0.1-cudnn-runtime-ubuntu24.04 AS conda-builder
+FROM nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu18.04 AS conda-builder
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
