@@ -11,7 +11,7 @@ ENV LANG=C.UTF-8 \
 # 安装基础依赖并下载 Miniconda
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget bzip2 ca-certificates && \
-    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.10.0-1-Linux-x86_64.sh -O /tmp/miniconda.sh && \
     bash /tmp/miniconda.sh -b -p /opt/conda && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
