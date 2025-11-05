@@ -54,7 +54,7 @@ jobs:
           docker create --name temp_container temp:latest
           docker cp temp_container:/version.txt ./version.txt
           docker rm temp_container
-          TAG=$(cat ./version.txt | tr '\n' '_' | sed 's/_$//')
+          TAG=$(cat ./version.txt | sed 's/[^a-zA-Z0-9._-]//g')
           echo "TAG=$TAG" >> $GITHUB_ENV
 
       # 用新 tag 推送镜像

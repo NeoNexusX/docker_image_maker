@@ -53,7 +53,7 @@ RUN /opt/conda/bin/python -m pip install --upgrade pip && \
 # 记录主要包和 CUDA/CUDNN 版本到 /version.txt
 RUN /opt/conda/bin/python -c "import torch, timm, pytorch_lightning as pl; \
     print('cuda=' + (torch.version.cuda or 'None')); \
-    print('torch=' + torch.__version__); \
+    print('torch=' + torch.__version__.split('+')[0]); \
     print('lightning=' + pl.__version__); \
     print('timm=' + timm.__version__);" > /version.txt
 
