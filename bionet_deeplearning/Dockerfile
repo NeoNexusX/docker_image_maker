@@ -35,6 +35,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         sudo git git-lfs vim wget curl htop less bzip2 ssh wget ca-certificates && \
     git lfs install && \
     mkdir -p /home/Share_Space && chmod 777 /home/Share_Space && \
+    mkdir -p /var/run/sshd && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ------------------------------
