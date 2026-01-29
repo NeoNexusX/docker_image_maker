@@ -1,0 +1,65 @@
+name: Docker Build & Push CUDA
+
+on:
+  push:
+    tags:
+      - 'massflow_cuda_v*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize build space
+        uses: justinthelaw/maximize-github-runner-space@master
+        with:
+          remove-dotnet: 'true'
+          remove-android: 'true'   # 新增：移除Android SDK
+          remove-haskell: 'true'   # 新增：移除Haskell
+          remove-codeql: 'true'    # 新增：移除CodeQL
+          remove-docker-images: 'true'  # 新增：清理Docker镜像缓存，至关重要
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: /home/runner/work/docker_image_maker/docker_image_maker
+  
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+            
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+
+      - name: Build temporary image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cuda
+          file: ./cuda/Dockerfile
+          push: false
+          load: true
+          tags: temp:latest
+
+      - name: Get CUDA version and set tag
+        run: |
+          CUDA_VERSION=$(docker run --rm temp:latest nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p')
+          TAG="massflow_cuda_${CUDA_VERSION}"
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cuda
+          file: ./cuda/Dockerfile
+          push: true
+          tags: |
+            neonexusx/massflow:${{ env.TAG }}
+            neonexusx/massflow:latest
+          cache-from: type=registry,ref=neonexusx/massflow:cache
+          cache-to: type=registry,ref=neonexusx/massflow:cache,mode=max
