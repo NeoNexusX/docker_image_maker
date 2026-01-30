@@ -48,7 +48,7 @@ jobs:
 
       - name: Get CUDA, Cardinal and Ubuntu versions and set tag
         run: |
-          UBUNTU_VERSION=$(docker run --rm temp:latest sh -c 'grep "^VERSION_ID=" /etc/os-release | cut -d= -f2 | tr -d "\"" | tr -d '\r\n')
+          UBUNTU_VERSION=$(docker run --rm temp:latest sh -c "grep '^VERSION_ID=' /etc/os-release | cut -d= -f2 | tr -d '\"' | tr -d '\r\n'")
           CUDA_VERSION=$(docker run --rm temp:latest nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p' | tr -d '\r\n')
           CARDINAL_VERSION=$(docker run --rm temp:latest R --slave -e 'cat(as.character(packageVersion("Cardinal")))' | tr -d '\r\n')
           TAG="ub_${UBUNTU_VERSION}_cuda_${CUDA_VERSION}_cardinal_${CARDINAL_VERSION}"
