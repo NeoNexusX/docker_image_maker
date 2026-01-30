@@ -53,7 +53,7 @@ RUN apt-get update -qq && \
     # add the repo from CRAN
     add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" && \
     # install R itself
-    apt-get update && apt-get install -y --no-install-recommends r-base=4.5.2-1.2004.0 && \
+    apt-get update && apt-get install -y --no-install-recommends r-base=4.5.2* && \
     # Install BiocManager and Cardinal
     R -e 'if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager"); Sys.setenv(PKG_LIBS = "-lrt"); BiocManager::install(c("matter", "CardinalIO"), force = TRUE); BiocManager::install("Cardinal")' && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
