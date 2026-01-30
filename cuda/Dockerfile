@@ -15,10 +15,21 @@ ENV LANG=C.UTF-8 \
     PATH=/opt/conda/bin:$PATH
 
 # ------------------------------
-# ① 安装系统工具和 git-lfs
+# ① 安装系统工具和 git-lfs。 libc6-dev 老ubuntu使用
 # ------------------------------
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        sudo git git-lfs vim wget curl htop less bzip2 ssh wget ca-certificates && \
+        sudo git git-lfs vim wget curl htop less bzip2 ssh wget ca-certificates \
+        pkg-config \
+        libc6-dev \
+        gfortran \
+        libblas-dev \
+        liblapack-dev \
+        libtiff5-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libfftw3-dev \
+        libcurl4-openssl-dev \
+        libxml2-dev && \
     git lfs install && \
     mkdir -p /home/Share_Space && chmod 777 /home/Share_Space && \
     mkdir -p /var/run/sshd && \
@@ -42,9 +53,9 @@ RUN apt-get update -qq && \
     # add the repo from CRAN
     add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" && \
     # install R itself
-    apt-get update && apt-get install -y --no-install-recommends r-base && \
+    apt-get update && apt-get install -y --no-install-recommends r-base=4.5.2-1.2004.0 && \
     # Install BiocManager and Cardinal
-    R -e 'if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Cardinal")' && \
+    R -e 'if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager"); Sys.setenv(PKG_LIBS = "-lrt"); BiocManager::install(c("matter", "CardinalIO"), force = TRUE); BiocManager::install("Cardinal")' && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ------------------------------
