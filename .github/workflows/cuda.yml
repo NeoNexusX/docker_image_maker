@@ -46,11 +46,12 @@ jobs:
           load: true
           tags: temp:latest
 
-      - name: Get CUDA and Cardinal versions and set tag
+      - name: Get CUDA, Cardinal and Ubuntu versions and set tag
         run: |
+          UBUNTU_VERSION=$(docker run --rm temp:latest sh -c '. /etc/os-release && echo $VERSION_ID')
           CUDA_VERSION=$(docker run --rm temp:latest nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p')
           CARDINAL_VERSION=$(docker run --rm temp:latest R --slave -e 'cat(as.character(packageVersion("Cardinal")), "\n")')
-          TAG="cuda_${CUDA_VERSION}_cardinal_${CARDINAL_VERSION}"
+          TAG="ub_${UBUNTU_VERSION}_cuda_${CUDA_VERSION}_cardinal_${CARDINAL_VERSION}"
           echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Build and push
