@@ -52,9 +52,9 @@ jobs:
           docker cp temp_container:/version.txt ./version.txt
           docker rm temp_container
           TAG=$(cat ./version.txt | \
-              sed 's/ubuntu=\(.*\)/ub_\1/' | \
-              sed 's/cuda=\(.*\)/cuda_\1/' | \
-              sed 's/Cardinal=\(.*\)/cardinal_\1/' | \
+              sed 's/ubuntu=\(.*\)/ub\1/' | \
+              sed 's/cuda=\(.*\)/cuda\1/' | \
+              sed 's/cardinal=\(.*\)/cardinal\1/' | \
               tr '\n' '_' | sed 's/_$//' | tr -d ' "')
           echo "TAG=$TAG" >> $GITHUB_ENV
 

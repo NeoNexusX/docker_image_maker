@@ -61,9 +61,9 @@ RUN apt-get update -qq && \
 # ------------------------------
 # ③ 输出版本详细信息到 /version.txt
 # ------------------------------
-RUN echo "ubuntu=$(lsb_release -d | cut -f2)" > /version.txt && \
-    echo "cuda=$(nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p')" >> /version.txt && \
-    echo "cardinal=$(R -e 'cat(as.character(packageVersion(\"Cardinal\")), \"\n\")')" >> /version.txt
+RUN echo "ubuntu=$(lsb_release -rs | cut -d. -f1)" > /version.txt && \
+    echo "cuda=$(nvcc --version | sed -n 's/.*release \([0-9]*\)\.\([0-9]*\).*/\1\2/p')" >> /version.txt && \
+    echo "cardinal=$(R --slave -e 'v<-packageVersion("Cardinal"); cat(v$major, v$minor, sep="")')" >> /version.txt
 
 # ------------------------------
 # 默认命令
