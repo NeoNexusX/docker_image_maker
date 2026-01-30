@@ -59,10 +59,11 @@ RUN apt-get update -qq && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ------------------------------
-# ③ 输出cuda的详细信息
+# ③ 输出版本详细信息到 /version.txt
 # ------------------------------
-RUN nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p' && \
-    R -e 'cat(as.character(packageVersion("Cardinal")), "\n")'
+RUN echo "ubuntu=$(lsb_release -d | cut -f2)" > /version.txt && \
+    echo "cuda=$(nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p')" >> /version.txt && \
+    echo "cardinal=$(R -e 'cat(as.character(packageVersion(\"Cardinal\")), \"\n\")')" >> /version.txt
 
 # ------------------------------
 # 默认命令
