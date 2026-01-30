@@ -46,10 +46,11 @@ jobs:
           load: true
           tags: temp:latest
 
-      - name: Get CUDA version and set tag
+      - name: Get CUDA and Cardinal versions and set tag
         run: |
           CUDA_VERSION=$(docker run --rm temp:latest nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p')
-          TAG="massflow_cuda_${CUDA_VERSION}"
+          CARDINAL_VERSION=$(docker run --rm temp:latest R --slave -e 'cat(as.character(packageVersion("Cardinal")), "\n")')
+          TAG="cuda_${CUDA_VERSION}_cardinal_${CARDINAL_VERSION}"
           echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Build and push

@@ -32,9 +32,26 @@ COPY --from=uv-builder /uv /usr/local/bin/uv
 COPY --from=uv-builder /uvx /usr/local/bin/uvx
 
 # ------------------------------
+# ②-2 安装 R 环境及 Cardinal
+# ------------------------------
+# update indices & install helper packages
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends software-properties-common dirmngr && \
+    # add the signing key
+    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc && \
+    # add the repo from CRAN
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" && \
+    # install R itself
+    apt-get update && apt-get install -y --no-install-recommends r-base && \
+    # Install BiocManager and Cardinal
+    R -e 'if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Cardinal")' && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# ------------------------------
 # ③ 输出cuda的详细信息
 # ------------------------------
-RUN nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p'
+RUN nvcc --version | sed -n 's/.*release \(.*\),.*/\1/p' && \
+    R -e 'cat(as.character(packageVersion("Cardinal")), "\n")'
 
 # ------------------------------
 # 默认命令
