@@ -48,3 +48,32 @@ docker run -it \
   --rm \
   neonexusx/massflow:latest
 ```
+
+After connecting via SSH, please restart the SSH service and change the password first:
+
+```bash
+service ssh restart && passwd 
+```
+
+### Software Test Code
+
+Install Cupy and verify functionality:
+
+https://github.com/NeoNexusX/Example/tree/main/Python/cupy
+
+Numba-CUDA test (Note: only supports CUDA 12 and above versions):
+
+https://github.com/NeoNexusX/Example/blob/main/Python/numba-cuda/numba-cuda.py
+
+```bash
+root@1340ea303917:/home/Share_Space/cupy_test# uv run main.py 
+Using device: 0 - NVIDIA GeForce RTX 4060 Laptop GPU
+device.compute_capability : 89
+Total Memory (MiB): 7805.06 MiB
+Hello from cupy-test!
+Free Memory: 6541.12 MiB
+Allocating array with 285786112 elements (approx 2180.38 MiB)...
+assert x_huge.nbytes == target_bytes : True
+Norm calculated: 16905.209611241145
+Press Enter to free memory and exit...
+```
