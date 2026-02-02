@@ -6,7 +6,7 @@ FROM ghcr.io/astral-sh/uv:latest AS uv-builder
 # ==============================
 # Stage 2: 主镜像阶段
 # ==============================
-FROM nvidia/cuda:13.0.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
