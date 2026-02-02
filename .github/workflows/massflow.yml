@@ -1,4 +1,4 @@
-name: Docker Build & Push CUDA
+name: Docker Build & Push Massflow runtime image
 
 on:
   push:
@@ -40,8 +40,8 @@ jobs:
       - name: Build temporary image
         uses: docker/build-push-action@v6
         with:
-          context: ./cuda
-          file: ./cuda/Dockerfile
+          context: ./massflow
+          file: ./massflow/Dockerfile
           push: false
           load: true
           tags: temp:latest
@@ -61,8 +61,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./cuda
-          file: ./cuda/Dockerfile
+          context: ./massflow
+          file: ./massflow/Dockerfile
           push: true
           tags: |
             neonexusx/massflow:${{ env.TAG }}
