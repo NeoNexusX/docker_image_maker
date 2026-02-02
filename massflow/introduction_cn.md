@@ -48,10 +48,12 @@ docker run -it \
   --rm \
   neonexusx/massflow:latest
 ```
-
 使用ssh连接后请先重启ssh和修改密码：
-
+使用host模式：
 ```bash
+sudo sed -i 's/^#Port 22/Port 10086/; s/^Port 22/Port 10086/' /etc/ssh/sshd_config
+
+其次是：
 service ssh restart && passwd 
 ```
 
