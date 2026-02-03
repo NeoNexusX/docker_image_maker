@@ -6,7 +6,7 @@ FROM ghcr.io/astral-sh/uv:latest AS uv-builder
 # ==============================
 # Stage 2: 主镜像阶段
 # ==============================
-FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxml2-dev \
         libbz2-dev \
         libtirpc-dev \
-        python3.12-dev && \
+        python3-dev && \
     git lfs install && \
     mkdir -p /home/Share_Space && chmod 777 /home/Share_Space && \
     mkdir -p /var/run/sshd && \
