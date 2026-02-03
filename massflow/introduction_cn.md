@@ -49,13 +49,30 @@ docker run -it \
   neonexusx/massflow:latest
 ```
 使用ssh连接后请先重启ssh和修改密码：
-使用host模式：
+
 ```bash
+#使用host模式，请使用：
 sudo sed -i 's/^#Port 22/Port 10086/; s/^Port 22/Port 10086/' /etc/ssh/sshd_config
 
-其次是：
+# 然后使用：
 service ssh restart && passwd 
 ```
+
+重启：
+
+```bash
+#重启后请使用：
+service ssh restart
+```
+
+挂载NAS，请在主机上：
+
+```shell
+#主机挂载
+sudo mount -t nfs -o soft,sync 10.26.58.111:/mnt/Bionet_01/Data ~/Share_Space/Datasets
+```
+
+使用后请**重启容器**，注意是重启不是重建
 
 软件测试代码：
 

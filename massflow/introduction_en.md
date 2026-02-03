@@ -52,8 +52,28 @@ docker run -it \
 After connecting via SSH, please restart the SSH service and change the password first:
 
 ```bash
+# If using host mode, please use:
+sudo sed -i 's/^#Port 22/Port 10086/; s/^Port 22/Port 10086/' /etc/ssh/sshd_config
+
+# Then use:
 service ssh restart && passwd 
 ```
+
+Restart:
+
+```bash
+# After restart, please use:
+service ssh restart
+```
+
+To mount NAS, please run on the host:
+
+```shell
+# Host mount
+sudo mount -t nfs -o soft,sync 10.26.58.111:/mnt/Bionet_01/Data ~/Share_Space/Datasets
+```
+
+After use, please **restart the container**. Note that this refers to a restart, not a rebuild.
 
 ### Software Test Code
 
