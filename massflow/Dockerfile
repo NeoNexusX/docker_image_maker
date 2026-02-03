@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libpng-dev \
         libfftw3-dev \
         libcurl4-openssl-dev \
+        libpcre2-dev \
         libxml2-dev && \
     git lfs install && \
     mkdir -p /home/Share_Space && chmod 777 /home/Share_Space && \
