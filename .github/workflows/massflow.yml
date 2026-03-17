@@ -13,9 +13,14 @@ jobs:
       - name: Maximize build space
         uses: justinthelaw/maximize-github-runner-space@main
         with:
-          remove-docker-engine: 'false'
-          remove-buildah: 'false'
-          remove-podman: 'false'
+          cleanup-profile: 'custom'
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
 
       - name: Checkout repository
         uses: actions/checkout@v4
