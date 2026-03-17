@@ -13,13 +13,9 @@ jobs:
       - name: Maximize build space
         uses: justinthelaw/maximize-github-runner-space@main
         with:
-          remove-dotnet: 'true'
-          remove-android: 'true'   # 新增：移除Android SDK
-          remove-haskell: 'true'   # 新增：移除Haskell
-          remove-codeql: 'true'    # 新增：移除CodeQL
-          remove-docker-images: 'true'  # 新增：清理Docker镜像缓存，至关重要
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
+          remove-docker-engine: 'false'
+          remove-buildah: 'false'
+          remove-podman: 'false'
       # get code
       - name: Checkout repository
         uses: actions/checkout@v4
