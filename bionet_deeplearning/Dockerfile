@@ -6,7 +6,7 @@ FROM ghcr.io/astral-sh/uv:0.5.14 AS uv-builder
 # ==============================
 # Stage 1: Miniconda 构建阶段
 # ==============================
-FROM nvidia/cuda:13.0.1-cudnn-runtime-ubuntu24.04 AS conda-builder
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS conda-builder
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends wget ca-certifi
 # ==============================
 # Stage 2: 主镜像阶段
 # ==============================
-FROM nvidia/cuda:13.0.1-cudnn-runtime-ubuntu24.04
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN /opt/conda/bin/python -m pip install --upgrade pip && \
     /opt/conda/bin/pip install --no-cache-dir numpy pandas && \
     /opt/conda/bin/pip install --no-cache-dir scipy scikit-learn matplotlib && \
-    /opt/conda/bin/pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu130 && \
+    /opt/conda/bin/pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu126 && \
     /opt/conda/bin/pip install --no-cache-dir pytorch-lightning timm transformers datasets && \
     /opt/conda/bin/pip cache purge
 
