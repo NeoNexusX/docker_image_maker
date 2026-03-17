@@ -1,4 +1,9 @@
 # ==============================
+# stage 0: uv构建阶段
+# ==============================
+FROM ghcr.io/astral-sh/uv:0.5.14 AS uv-builder
+
+# ==============================
 # Stage 1: Miniconda 构建阶段
 # ==============================
 FROM nvidia/cuda:13.0.1-cudnn-runtime-ubuntu24.04 AS conda-builder
@@ -32,7 +37,12 @@ COPY --from=conda-builder /opt/conda /opt/conda
 # ① 安装系统工具和 git-lfs
 # ------------------------------
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        sudo git git-lfs vim wget curl htop less bzip2 ssh wget ca-certificates && \
+        sudo git git-lfs vim wget curl htop less bzip2 ssh ca-certificates \
+        pkg-config \
+        python3-dev \
+        gfortran \
+        libblas-dev \
+        liblapack-dev && \
     git lfs install && \
     mkdir -p /home/Share_Space && chmod 777 /home/Share_Space && \
     mkdir -p /var/run/sshd && \
@@ -50,14 +60,21 @@ RUN /opt/conda/bin/python -m pip install --upgrade pip && \
     /opt/conda/bin/pip cache purge
 
 # ------------------------------
-# ③ 输出Python包详细信息
+# ③ 安装uv环境
+# ------------------------------
+COPY --from=uv-builder /uv /usr/local/bin/uv
+COPY --from=uv-builder /uvx /usr/local/bin/uvx
+
+# ------------------------------
+# ④ 输出Python包详细信息
 # ------------------------------
 # 记录主要包和 CUDA/CUDNN 版本到 /version.txt
 RUN /opt/conda/bin/python -c "import torch, timm, pytorch_lightning as pl; \
     print('cuda=' + (torch.version.cuda or 'None')); \
     print('torch=' + torch.__version__.split('+')[0]); \
     print('lightning=' + pl.__version__); \
-    print('timm=' + timm.__version__);" > /version.txt
+    print('timm=' + timm.__version__);" > /version.txt && \
+    echo "uv=$(uv --version | cut -d' ' -f2)" >> /version.txt
 
 # ------------------------------
 # 默认命令

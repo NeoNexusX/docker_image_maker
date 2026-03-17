@@ -55,11 +55,12 @@ jobs:
           docker cp temp_container:/version.txt ./version.txt
           docker rm temp_container
           TAG=$(cat ./version.txt | \
-              sed 's/cuda=\([0-9.]*\)/cuda\1/' | \
-              sed 's/torch=\([0-9.]*\)[^ ]*/torch\1/' | \
-              sed 's/lightning=\([0-9.]*\)/lightning\1/' | \
-              sed 's/timm=\([0-9.]*\)/timm\1/' | \
-              tr '\n' '_' | sed 's/_$//' | tr -d '.+')
+            sed 's/cuda=\([0-9.]*\)/cuda\1/' | \
+            sed 's/torch=\([0-9.]*\)[^ ]*/torch\1/' | \
+            sed 's/lightning=\([0-9.]*\)/lightning\1/' | \
+            sed 's/timm=\([0-9.]*\)/timm\1/' | \
+            sed 's/uv=\([0-9.]*\)/uv\1/' | \
+            tr '\n' '_' | sed 's/_$//' | tr -d '.+')
           echo "TAG=$TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
 
